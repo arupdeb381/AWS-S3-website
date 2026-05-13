@@ -8,14 +8,19 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate code
+      - name: Check index.html exists
         run: |
-          echo "Validation running for branch: ${{ github.ref_name }}"
-          ls -la
+          test -f index.html
+          echo "index.html found"
+
+      - name: Validate HTML
+        run: |
+          npx htmlhint index.html
 
   deploy:
     if: github.ref == 'refs/heads/main'
